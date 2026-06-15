@@ -2,7 +2,10 @@ package com.lcwd.user.controller;
 
 import com.lcwd.user.entity.User;
 import com.lcwd.user.service.UserService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -15,17 +18,28 @@ public class UserController {
     private UserService userService;
 
     @PostMapping
-    public User createUser(@RequestBody User user) {
-        return userService.saveUser(user);
+    public ResponseEntity<User> createUser(@Valid @RequestBody User user) {
+
+        User savedUser = userService.saveUser(user);
+
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .body(savedUser);
     }
 
     @GetMapping("/{userId}")
-    public User getSingleUser(@PathVariable String userId) {
-        return userService.getUser(userId);
+    public ResponseEntity<User> getUser(@PathVariable String userId) {
+
+        User user = userService.getUser(userId);
+
+        return ResponseEntity.ok(user);
     }
 
     @GetMapping
-    public List<User> getAllUsers() {
-        return userService.getAllUsers();
+    public ResponseEntity<List<User>> getAllUsers() {
+
+        List<User> users = userService.getAllUsers();
+
+        return ResponseEntity.ok(users);
     }
 }

@@ -3,6 +3,7 @@ package com.lcwd.user.service.impl;
 import com.lcwd.user.entity.Hotel;
 import com.lcwd.user.entity.Rating;
 import com.lcwd.user.entity.User;
+import com.lcwd.user.exception.ResourceNotFoundException;
 import com.lcwd.user.external.services.HotelService;
 import com.lcwd.user.external.services.RatingService;
 import com.lcwd.user.repository.UserRepository;
@@ -41,7 +42,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public User getUser(String userId) {
         User user = userRepository.findById(userId)
-                .orElseThrow(() -> new RuntimeException("User not found with id: " + userId));
+                .orElseThrow(() -> new ResourceNotFoundException("User not found with id : " + userId));
 
         List<Rating> ratings = ratingService.getRatingsByUserId(userId);
 
@@ -57,7 +58,7 @@ public class UserServiceImpl implements UserService {
     public User ratingHotelFallback(String userId, Exception ex) {
 
         User user = userRepository.findById(userId)
-                .orElseThrow(() -> new RuntimeException("User not found with id: " + userId));
+                .orElseThrow(() -> new ResourceNotFoundException("User not found with id : " + userId));
 
         user.setRatings(new ArrayList<>());
 
