@@ -7,6 +7,7 @@ import com.lcwd.hotel.service.HotelService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.UUID;
+import com.lcwd.hotel.exception.ResourceNotFoundException;
 
 import java.util.List;
 
@@ -29,6 +30,29 @@ public class HotelServiceImpl implements HotelService {
 
     @Override
     public Hotel get(String id) {
-        return hotelRepository.findById(id).orElse(null);
+        return hotelRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Hotel not found with id : " + id));
+    }
+
+    @Override
+    public Hotel updateHotel(String id, Hotel hotel) {
+
+        Hotel existingHotel = hotelRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Hotel not found with id : " + id));
+
+        existingHotel.setName(hotel.getName());
+        existingHotel.setLocation(hotel.getLocation());
+        existingHotel.setAbout(hotel.getAbout());
+
+        return hotelRepository.save(existingHotel);
+    }
+
+    @Override
+    public void deleteHotel(String id) {
+
+        Hotel existingHotel = hotelRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Hotel not found with id : " + id));
+
+        hotelRepository.delete(existingHotel);
     }
 }
