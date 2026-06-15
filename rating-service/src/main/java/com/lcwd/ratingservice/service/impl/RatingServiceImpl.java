@@ -1,6 +1,7 @@
 package com.lcwd.ratingservice.service.impl;
 
 import com.lcwd.ratingservice.entity.Rating;
+import com.lcwd.ratingservice.exception.ResourceNotFoundException;
 import com.lcwd.ratingservice.repository.RatingRepository;
 import com.lcwd.ratingservice.service.RatingService;
 import org.springframework.stereotype.Service;
@@ -19,12 +20,10 @@ public class RatingServiceImpl implements RatingService {
 
     @Override
     public Rating createRating(Rating rating) {
-        System.out.println("Before save: " + rating);
 
-        Rating savedRating = ratingRepository.save(rating);
+        rating.setRatingId(UUID.randomUUID().toString());
 
-        System.out.println("After save: " + savedRating);
-        return savedRating;
+        return ratingRepository.save(rating);
     }
 
     @Override
@@ -44,6 +43,33 @@ public class RatingServiceImpl implements RatingService {
 
     @Override
     public Rating getRatingById(String ratingId) {
-        return ratingRepository.findById(ratingId).orElse(null);
+        return ratingRepository.findById(ratingId)
+                .orElseThrow(() ->
+                        new ResourceNotFoundException("Rating not found with id : " + ratingId));
+    }
+
+    @Override
+    public Rating updateRating(String ratingId, Rating rating) {
+
+        Rating existingRating = ratingRepository.findById(ratingId)
+                .orElseThrow(() ->
+                        new ResourceNotFoundException("Rating not found with id : " + ratingId));
+
+        existingRating.setUserId(rating.getUserId());
+        existingRating.setHotelId(rating.getHotelId());
+        existingRating.setRating(rating.getRating());
+        existingRating.setFeedback(rating.getFeedback());
+
+        return ratingRepository.save(existingRating);
+    }
+
+    @Override
+    public void deleteRating(String ratingId) {
+
+        Rating existingRating = ratingRepository.findById(ratingId)
+                .orElseThrow(() ->
+                        new ResourceNotFoundException("Rating not found with id : " + ratingId));
+
+        ratingRepository.delete(existingRating);
     }
 }
