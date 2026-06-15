@@ -9,6 +9,8 @@ import com.lcwd.user.repository.UserRepository;
 import com.lcwd.user.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
+import java.util.ArrayList;
 
 import java.util.List;
 import java.util.UUID;
@@ -32,6 +34,10 @@ public class UserServiceImpl implements UserService {
         return userRepository.save(user);
     }
 
+    @CircuitBreaker(
+            name = "ratingHotelBreaker",
+            fallbackMethod = "ratingHotelFallback"
+    )
     @Override
     public User getUser(String userId) {
         User user = userRepository.findById(userId)
@@ -45,6 +51,15 @@ public class UserServiceImpl implements UserService {
         });
 
         user.setRatings(ratings);
+
+        return user;
+    }
+    public User ratingHotelFallback(String userId, Exception ex) {
+
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("User not found with id: " + userId));
+
+        user.setRatings(new ArrayList<>());
 
         return user;
     }
