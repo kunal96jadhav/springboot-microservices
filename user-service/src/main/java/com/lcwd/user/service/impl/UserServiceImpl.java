@@ -1,6 +1,10 @@
 package com.lcwd.user.service.impl;
 
+import com.lcwd.user.entity.Hotel;
+import com.lcwd.user.entity.Rating;
 import com.lcwd.user.entity.User;
+import com.lcwd.user.external.services.HotelService;
+import com.lcwd.user.external.services.RatingService;
 import com.lcwd.user.repository.UserRepository;
 import com.lcwd.user.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +19,12 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private RatingService ratingService;
+
+    @Autowired
+    private HotelService hotelService;
+
     @Override
     public User saveUser(User user) {
         String randomUserId = UUID.randomUUID().toString();
@@ -24,10 +34,20 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User getUser(String userId) {
-        return userRepository.findById(userId)
+        User user = userRepository.findById(userId)
                 .orElseThrow(() -> new RuntimeException("User not found with id: " + userId));
-    }
 
+        List<Rating> ratings = ratingService.getRatingsByUserId(userId);
+
+        ratings.forEach(rating -> {
+            Hotel hotel = hotelService.getHotel(rating.getHotelId());
+            rating.setHotel(hotel);
+        });
+
+        user.setRatings(ratings);
+
+        return user;
+    }
     @Override
     public List<User> getAllUsers() {
         return userRepository.findAll();

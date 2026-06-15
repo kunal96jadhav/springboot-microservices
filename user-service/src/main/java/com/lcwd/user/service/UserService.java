@@ -1,6 +1,8 @@
 package com.lcwd.user.service;
 
 import com.lcwd.user.entity.User;
+
+
 import java.util.List;
 
 public interface UserService {
@@ -10,4 +12,6 @@ public interface UserService {
     User getUser(String userId);
 
     List<User> getAllUsers();
+
+
 }
