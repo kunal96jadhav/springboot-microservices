@@ -35,4 +35,9 @@ public class RatingController {
     public List<Rating> getRatingsByHotelId(@PathVariable String hotelId) {
         return ratingService.getRatingsByHotelId(hotelId);
     }
+
+    @GetMapping("/{ratingId}")
+    public Rating getRatingById(@PathVariable String ratingId) {
+        return ratingService.getRatingById(ratingId);
+    }
 }

@@ -16,4 +16,6 @@ public interface RatingService {
 
     // Get Ratings By Hotel Id
     List<Rating> getRatingsByHotelId(String hotelId);
+
+    Rating getRatingById(String ratingId);
 }

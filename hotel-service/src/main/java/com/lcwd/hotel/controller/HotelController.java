@@ -25,7 +25,7 @@ public class HotelController {
     }
 
     @GetMapping("/{id}")
-    public Hotel getHotel(@PathVariable Long id) {
+    public Hotel getHotel(@PathVariable String id) {
         return hotelService.get(id);
     }
 }

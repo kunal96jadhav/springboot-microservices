@@ -1,8 +1,6 @@
-package com.lcwd.hotel.entity;
+package com.lcwd.user.entity;
 
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import lombok.*;
 
@@ -12,12 +10,15 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Hotel {
+public class User {
 
     @Id
-    private String id;
+    private String userId;
 
     private String name;
-    private String location;
+
+    private String email;
+
     private String about;
+
 }
