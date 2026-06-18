@@ -1,8 +1,8 @@
 package com.lcwd.user.service.impl;
 
-import com.lcwd.user.entity.Hotel;
-import com.lcwd.user.entity.Rating;
-import com.lcwd.user.entity.User;
+import com.lcwd.user.entities.Hotel;
+import com.lcwd.user.entities.Rating;
+import com.lcwd.user.entities.User;
 import com.lcwd.user.exception.ResourceNotFoundException;
 import com.lcwd.user.external.services.HotelService;
 import com.lcwd.user.external.services.RatingService;

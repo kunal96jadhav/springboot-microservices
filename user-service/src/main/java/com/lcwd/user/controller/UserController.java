@@ -1,6 +1,6 @@
 package com.lcwd.user.controller;
 
-import com.lcwd.user.entity.User;
+import com.lcwd.user.entities.User;
 import com.lcwd.user.service.UserService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;

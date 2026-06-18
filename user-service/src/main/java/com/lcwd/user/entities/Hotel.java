@@ -1,4 +1,4 @@
-package com.lcwd.user.entity;
+package com.lcwd.user.entities;
 
 import lombok.*;
 

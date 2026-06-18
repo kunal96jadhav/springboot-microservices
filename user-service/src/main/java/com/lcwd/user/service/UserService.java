@@ -1,6 +1,6 @@
 package com.lcwd.user.service;
 
-import com.lcwd.user.entity.User;
+import com.lcwd.user.entities.User;
 
 
 import java.util.List;
