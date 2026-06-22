@@ -36,4 +36,18 @@ public class JwtUtil {
         return claims.getSubject();
     }
 
+    public static boolean validateToken(String token, String username) {
+        String tokenUsername = extractUsername(token);
+        return tokenUsername.equals(username) && !isTokenExpired(token);
+    }
+
+    private static boolean isTokenExpired(String token) {
+        Claims claims = Jwts.parser()
+                .verifyWith((javax.crypto.SecretKey) KEY)
+                .build()
+                .parseSignedClaims(token)
+                .getPayload();
+
+        return claims.getExpiration().before(new Date());
+    }
 }
