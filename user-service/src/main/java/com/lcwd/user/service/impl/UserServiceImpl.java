@@ -35,10 +35,7 @@ public class UserServiceImpl implements UserService {
         return userRepository.save(user);
     }
 
-    @CircuitBreaker(
-            name = "ratingHotelBreaker",
-            fallbackMethod = "ratingHotelFallback"
-    )
+    @CircuitBreaker(name = "ratingHotelBreaker", fallbackMethod = "ratingHotelFallback")
     @Override
     public User getUser(String userId) {
         User user = userRepository.findById(userId)
