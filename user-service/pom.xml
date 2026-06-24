@@ -150,7 +150,6 @@
 								<path>
 									<groupId>org.projectlombok</groupId>
 									<artifactId>lombok</artifactId>
-									<optional>true</optional>
 								</path>
 							</annotationProcessorPaths>
 						</configuration>

@@ -1,0 +1,60 @@
+services:
+  service-registry:
+    image: service-registry
+    container_name: service-registry-container
+    ports:
+      - "8761:8761"
+    networks:
+      - microservices-network
+
+  api-gateway:
+    image: api-gateway
+    container_name: api-gateway-container
+    ports:
+      - "8084:8084"
+    depends_on:
+      - service-registry
+    networks:
+      - microservices-network
+
+  hotel-service:
+    image: hotel-service
+    container_name: hotel-service-container
+    ports:
+      - "8082:8082"
+    environment:
+      DB_USERNAME_PG: ${DB_USERNAME_PG}
+      DB_PASSWORD_PG: ${DB_PASSWORD_PG}
+    depends_on:
+      - service-registry
+    networks:
+      - microservices-network
+
+  rating-service:
+    image: rating-service
+    container_name: rating-service-container
+    ports:
+      - "8083:8083"
+    depends_on:
+      - service-registry
+    networks:
+      - microservices-network
+
+  user-service:
+    image: user-service
+    container_name: user-service-container
+    ports:
+      - "8081:8081"
+    environment:
+      DB_USERNAME: ${DB_USERNAME}
+      DB_PASSWORD: ${DB_PASSWORD}
+    depends_on:
+      - service-registry
+      - hotel-service
+      - rating-service
+    networks:
+      - microservices-network
+
+networks:
+  microservices-network:
+    external: true
